@@ -1,0 +1,117 @@
+ \fabio{Decidere se le notazioni $\At$, $p$, $\overline{p}$ vengono sovrascritte dal caso ground a quello generale, oppure ne usiamo di nuove. Per ora sono sovrascritte. Genera troppa confusione?}
+ Motivated by the observations of the previous section, we propose a different approach to the semantics of non-ground programs, based on \emph{saturation} techniques [CIT,CIT].
+
+\begin{todo} More introduction/intuition on saturation, depending on what is already explained in the introduction. \end{todo}
+
+For such purpose, we consider the following adjunction between presheaf categories.
+
+$$\xymatrix{\prsh{\Lw} \ar@(ur,ul)[rr]^{\U} &\bot & \ar@(dl,dr)[ll]^{\K} \prsh{|\Lw|}}$$
+
+The left adjoint $\U$ is the forgetful functor, given by precomposition with the inclusion functor
+$\incl\: |\Lw| \hookrightarrow \Lw$. As shown in~\cite[X, Th. 1, Cor. 2]{mclane}, $\U$ has a right adjoint $\K\: \prsh{|\Lw|}\to \prsh{\Lw}$ sending each object of $\prsh{|\Lw|}$ to its \emph{Right Kan Extension} along $\incl$.
+\[\xymatrix{|\Lw| \ar@{^{(}->}[r]^{\Lw} \ar[d]_{\F}&  \Lw \ar[ld]^{\K(\F)}\\
+ \set}\]
+Given any presheaf $\F \: |\Lw| \to \Set$, the functor $\K(\F) \: \Lw \to \Set$ is defined as follows on objects $n \in |\Lw|$ and arrows $\theta \in \Lw[n,m]$:
+\begin{eqnarray*}
+% \nonumber to remove numbering (before each equation)
+  \K(\F)(n) &:=& \prod_{\theta \in \Lw[n,m]} \F (m) \\
+  \K(\F)(\theta) &:& < x_{\tau}>_{\tau \in \Lw[n,m']} \mapsto <(x_{\sigma\circ\theta})_\sigma>_{\sigma \in \Lw[m,m'']}
+\end{eqnarray*}\fabio{Qualche idea migliore per la notazione delle tuple?}
+where $< x_{\tau}>_{\tau \in \Lw[n,m']}$ is the notation for a tuple in $\prod_{\tau \in \Lw[n,m']} \F (m')$, with $x_{\tau}$ the element indexed by $\tau$. The tuple $<(x_{\sigma\circ\theta})_\sigma>_{\sigma \in \Lw[m,m']}$ can be intuitively read as follows: for each $\sigma \in \Lw[m,m'']$, we let the element indexed by $\sigma$ to be the one which was indexed by $\sigma\circ\theta \in \Lw[n,m'']$ in the input tuple $< x_{\tau}>_{\tau \in \Lw[n,m']}$.
+
+Next we consider the instantiation of the unit of the adjunction to the presheaf $\At \: \Lw \to \Set$, as defined in the previous section. This is a natural transformation $\eta\: \At \to \K\U(\At)$ given as follows:
+\begin{align}\label{Eq:unit_satAdj}
+% \nonumber to remove numbering (before each equation)
+  \eta_{\At} (n)\: \U \At(n) & \to \prod_{\theta \in \Lw[n,m]} \U \At (m) \nonumber \\
+  A & \mapsto < \big(\U\At(\theta)(A)\big)_{\theta}>_{\theta \in \Lw[n,m]}.
+\end{align}
+The set $\eta_{\At} (n)$ represents the \emph{saturation} of the goal $A$, i.e. it consists of all substitution instances $\U \At(\theta)(A) = A \theta$ of $A$, each indexed by the corresponding $\theta \in \Lw[n,m]$.
+
+We now include in the picture the saturation on the program side. For such purpose, consider the restriction of $\PP \: \prsh{\Lw} \to \prsh{\Lw}$ to an endofunctor in $\prsh{|\Lw|}$. When the context is unambiguous, this will be also denoted with $\PP$, the difference between $\Lw$ and $|\Lw|$ being just that the latter has only identities as arrows.
+Fixed a logic program $\mb{P}$, define a natural transformation $p^{\flat} \: \U \At \to \PP (\U \At)$ in $\prsh{|\Lw|}$ as follows:
+\begin{align}\label{eq:SatTermMatching}
+% \nonumber to remove numbering (before each equation)
+  p^{\flat}(n) \: \At (n)  &\to \PP (\U \At) (n)  \nonumber \\
+                 A            &\mapsto \{ \{B_1,\dots,B_k\}\theta\ |\ H :- B_1,\dots,B_k \text{ is a clause of }\mb{P}\text{, } \nonumber \\
+                              & \hspace{3cm} A = H \theta \text{ and } \nonumber\\
+                              & \hspace{3cm} B_1\theta, \dots, B_k\theta \in \At(n)\}.
+\end{align}
+
+Observe that $p^{\flat}$ is defined by term-matching according to equation \eqref{Eq:KomPow_termMatching}, the only difference being that we consider the presheaf $\U\At \in \prsh{|\Lw|}$ instead of $\At \in \prsh{\Lw}$. As observed in the previous section, $p^{\flat}$ would fail to be a natural transformation if directly defined on $\At$ in $\prsh{\Lw}$. However, the naturality requirement is trivially satisfied in $\prsh{|\Lw|}$, because there is no arrow to test in $|\Lw|$ apart the identities.
+
+We can now recover a natural transformation in $\prsh{\Lw}$ as follows:
+\begin{eqnarray}\label{eq:SatCoalgebra}
+% \nonumber to remove numbering (before each equation)
+  \At \ \xrightarrow{\eta _{\At}} \ \K\U (\At) \ \xrightarrow{\K(p^{\flat})} \ \K \PP \U (\At) .
+\end{eqnarray}
+The natural transformation $\K(p^{\flat})$ in the equation \eqref{eq:SatCoalgebra} is defined as an `indexwise' application of $p^{\flat}$ on tuples from $\K\U(\At)$, that is:
+\begin{align*}
+% \nonumber to remove numbering (before each equation)
+    \K(p^{\flat})(n) \: \K\U(\At)(n) & \to \K\PP \U (\At)(n) \\
+                     <A_{\theta}>_{\theta \in \Lw[n,m]}  & \mapsto <\big(p^{\flat}(m)(A_{\theta})\big)_{\theta}>_{\theta \in \Lw[n,m]}
+\end{align*}
+Intuitively, $\K(p^{\flat})(n)$ models term matching between the substitution instances of a goal $A \in \At(n)$ and the substitution instances of clauses in the program (the action of $p^{\flat}$). The former are recovered from $A$ through the natural transformation $\eta_{\At}$. The resulting composition $\K(p^{\flat})\circ \eta_{\At}\: \At \to \K \PP\U (\At)$ is a coalgebra for the functor $\K \PP\U \: \prsh{\Lw} \to \prsh{\Lw}$. We overload the notation of the ground case by denoting with $p$ the coalgebra $\K(p^{\flat})\circ \eta_{\At}$ and we also abbreviate $\K \PP\U$ with $\FS$. The idea is to let $p \: \At \to \FS(\At)$ encode our logic program $\mb{P}$, with $\FS$ playing the same role of $\p_f\p_f$ in the ground case. In order to show how this meets the specification given in \eqref{Eq:Draw_idea_saturation}, we unfold the meaning of $p$ in terms of its components $\eta_{\At}$ and $p^{\flat}$:
+\begin{align}\label{Eq:Sat_p}
+% \nonumber to remove numbering (before each equation)
+  p(n) \: \At (n)  &\to \FS (\At) (n)  \nonumber \\
+            A      &\mapsto <\{ \{B_1,\dots,B_k\}\tau\ |\ H :- B_1,\dots,B_k \text{ is a clause of }\mb{P}\text{, } \nonumber \\
+                   & \hspace{3cm} A \theta = H \tau \text{ and } \nonumber \\
+                   & \hspace{3cm} B_1\tau, \dots, B_k\tau \in \At(m)\}>_{\theta \in \Lw[n,m]}.
+\end{align}
+Observe that $p$ is indeed an arrow of $\prsh{\Lw}$: it satisfies the naturality requirement, since both $\K(p^{\flat})$ and $\eta_{\At}$ are natural transformations. In this way, we achieve that property of `commuting with substitutions' that was precluded by the term-matching approach, as shown by the following rephrasing of example \ref{Ex:non_compositional}.
+\begin{example}\label{Ex:sat_is_compositional} Example \ref{Ex:non_compositional} rephrased and eventually commuting.
+\end{example}
+
+Another benefit of saturated semantics is that the coalgebra $p \: \At \to \FS(\At)$ `lives' in a (co)complete category which behaves (pointwise) as $\Set$. This allows to follow the same steps of the ground case, explicitly constructing a a coalgebra for the cofree comonad $\mb{C}(\FS)$ as a straightforward generalization of constructions \ref{Constr:cofree_ground} and \ref{Constr:coalgComonad_ground}. In this aim, we first need to show the following property.
+
+\begin{proposition}\label{Prop:terminalForKPPU_converges} The terminal sequence for $\At \times \FS (-)$ converges to a terminal coalgebra. \end{proposition}
+\begin{proof} By \cite[Th. 7]{Worrell99}, it suffices to prove that $\FS$ is an accessible mono-preserving functor. Since these properties are preserved by composition, we show them separately for each component of $\FS$:
+\begin{itemize}
+  \item $\K$ and $\U$ are a pair of adjoint functors between accessible categories, whence they are accessible themselves (\cite[Prop. 2.23]{adamek/rosicky:1994}). Moreover, they are both right adjoints: in particular, $\U$ is right adjoint to the left Kan extension along $i \: |\catC| \hookrightarrow \catC$. It follows that both preserve limits, whence they preserve monos.
+  \item The functors $\widehat{\p_c}\: \prsh{|\Lw|} \to\prsh{|\Lw|}$ and $\widehat{\p_f}\: \prsh{|\Lw|} \to\prsh{|\Lw|}$ are defined as liftings from $\Set$ to $\prsh{|\Lw|}$ of $\p_ c \: \Set \to \Set$ and $\p_f \: \Set \to \Set$. As observed in construction \ref{Constr:cofree_ground}, $\p_c$ and $\p_f$ are both accessible functors on $\Set$ which also preserve pullbacks. Since (co)limits in presheaf categories are computed objectwise, this means that also $\widehat{\p_c}$ and $\widehat{\p_f}$ have these properties. In particular, preservation of pullbacks implies preservation of monos.
+\end{itemize}
+\end{proof}
+
+\begin{construction}\label{Constr:cofree_sat} The terminal sequence for the functor $\At \times \FS (-) \: \prsh{\Lw} \to \prsh{\Lw}$ consists of a sequence of objects $X_{\alpha}$ and arrows $\delta_{\alpha}\: X_{\alpha+1} \to X_{\alpha}$, which are defined just as in construction \ref{Constr:cofree_ground}, with $\FS$ replacing $\p_f \p_f$.
+
+By proposition \ref{Prop:terminalForKPPU_converges}, this sequence converges to a limit $X_{\gamma}$ such that $X_{\gamma} \cong X_{\gamma+1}$ and $X_{\gamma}$ is the carrier of the cofree $\FS$-coalgebra on $\At$.
+\end{construction}
+By accessibility of $\FS$, the \emph{cofree comonad} $\mb{C}(\FS)$ on $\FS$ exists and maps $\At$ into $X_{\gamma}$ given as in construction \ref{Constr:cofree_sat}. A $\mb{C}(\FS)$-coalgebra $\overline{p} \: \At \to X_{\gamma}$ (for which we overload the notation used in the ground case) is defined as follows.
+\begin{construction}\label{Constr:coalgComonad_sat} Let $\{p_{\alpha}\: \At \to X_{\alpha}\}_{\alpha \ls \gamma}$ be a cone on the terminal sequence of construction \ref{Constr:cofree_sat}, defined as in construction \ref{Constr:coalgComonad_ground} with $\FS$ replacing $\p_f \p_f$ and $p$ defined according to \eqref{Eq:Sat_p}. Analogously to the ground case, $X_{\gamma} = \mb{C}(\FS)(\At)$ yields a function $\overline{p}\: \At \to X_{\gamma}$ which is a $\mb{C}(\FS)$-coalgebra structure on $\At$.
+\end{construction}
+As in the ground case, the coalgebra $\overline{p}$ is constructed as an iterative application of $p$: we call \emph{saturated derivation tree} the associated notion of computation, which is defined as follows.
+
+\begin{definition} Let $\mc{A}$ be an alphabet. Fix a logic program $\mb{P}$ and an atom $A$ based on $\mc{A}$. The \emph{saturated derivation tree} for $A$ in $\mb{P}$ is the possibly infinite tree $T$ satisfying properties 1-4 of definition \ref{DEF:and-or_par_tree_ground} and property 5 replaced by the following:
+ \begin{itemize}
+  \item for every and-node $s$ in $T$, let $A'$ be its label.  Children of $s$ are or-nodes in 1-1 correspondence with clauses $C\ =\ H:- B_1,\dots,B_n$ of $\mb{P}$ such that $A'\theta = H\tau$ for some substitution $\tau$, $\theta$. For each such child $t$, let $C\ =\ H:- B_1,\dots,B_n$, $\theta$ and $\tau$ respectively the clause and the substitutions associated with $t$. Then $t$ has exactly $n$ and-nodes $t_1,\dots,t_n$ as children, where $t_j$ is labeled with $B_j \tau$ for $1 \leq j \leq n$.
+ \end{itemize}
+\end{definition}
+
+We can now state an adequacy theorem, in analogy with the one provided for the ground case (proposition \ref{PROP:adequacy_ground}).
+
+\begin{theorem} Given an alphabet $\mc{A}$ and a logic program $\mb{P}$ based on $\mc{A}$, let $\overline{p}$ be defined from $\mb{P}$ according to construction \ref{Constr:coalgComonad_sat}. Then, for every $n\ls \omega$ and $A \in \At(n)$, the value $\overline{p}(n)(A)$ represents the saturated derivation tree of $A$ in $\mb{P}$.
+\end{theorem}
+
+\begin{todo} If true, we could remark that our adequacy theorem (contrary to the one in \cite[Th. 4.5]{KomPowerCSL11} for coinductive forests) does not need to bound the breadth, by effect of $\K$. \end{todo}
+
+%A bridge between this notion of computation and our categorical formulation is built analogously to \cite[Th. 4.5]{KomPowerCSL11}.
+
+%\begin{theorem}[Adequacy]\label{Th:adequacy_sat} Let $\mb{P}$ be a logic program and $\overline{p^{\sharp}}$ the associated $\mb{C}(\FS)$-coalgebra. Given an atom $A \in \At(n)$, let $\mb{T}_A$ denote the saturated derivation tree of $A$ in $\mb{P}$. Then, for each $k \ls \omega$, consider the function $p_k(n) \: \At(n) \to \mb{C}(\FS)(\At)$ as in construction \label{Constr:coalgComonad_sat}.
+% \begin{itemize}
+%   \item The object $p_k(n)(A)$ is $\mb{T}_A^k$.
+%   \item The tree $\mb{T}_A$ has finite depth $k$ if and only if $\overline{p^{\sharp}}(n) = p_k(n)$.
+% \end{itemize}
+%\end{theorem}
+
+The commutativity property of the map $p$, as described in example \ref{Ex:sat_is_compositional}, can be lifted to a commutativity property of $\overline{p}$, in virtue of its definition in terms of $p$. This allows us to state the following proposition.
+
+\begin{theorem}[Compositionality] Given an atomic goal $A \in \At(n)$, let $\|\cdot\|$ denote the map associating to $A$ its saturated derivation tree $\overline{p}(n)(A)$. Let $\theta \in \Lw[n,m]$ be a substitution. Then we have the following:
+\begin{equation*}
+    \|A\theta\| = \|A\|\overline{\theta}
+\end{equation*}
+where the object $\|A\|\overline{\theta}$ on the right-hand side is a shorthand for the application of $\mb{C}(\FS)(\At)(\theta) \: \mb{C}(\FS)(\At)(n) \to \mb{C}(\FS)(\At)(m)$ to $\|A\| \in \mb{C}(\FS)(\At)(n)$.
+\end{theorem}
+\begin{proof}
+\begin{todo} Give in few words the idea of how $\mb{C}(\FS)(\At)(\theta)$ acts on $\|A\|$, as a `nodewise' application of $\theta$ to the whole tree $\|A\| \in \mb{C}(\FS)(\At)(n)$. This should convince the reader of the statement.
+\end{todo}
+\end{proof} 

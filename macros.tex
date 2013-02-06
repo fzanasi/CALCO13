@@ -1,0 +1,158 @@
+\usepackage{url}
+\usepackage{vaucanson-g}
+\sloppy
+
+%\usepackage{times} %changes font to times, which saves lots of space!
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{comment}
+\usepackage[small]{caption}
+\setlength{\captionmargin}{12pt}
+
+\usepackage{color}
+
+\usepackage{graphicx,epsfig,color}
+
+\usepackage{xypic}
+\input xy
+\xyoption{all}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{eucal}
+%
+% --- Modifications of mathcode (cf. TeX book p. 344) ---
+%
+\mathcode`:="003A  % : ordinary symbol
+\mathcode`;="003B  % ; ordinary symbol
+\mathcode`?="003F  % ? ordinary symbol
+\mathcode`|="026A  % | ordinary symbol
+\mathcode`<="4268  % < abbreviates \langle
+\mathcode`>="5269  % > abbreviates \rangle
+
+\mathchardef\ls="213C    % less symbol (< used as \langle)
+\mathchardef\gr="213E    % greater symbol (> used as \rangle)
+\mathchardef\uparrow="0222  % adaptation mathmode of uparrow
+\mathchardef\downarrow="0223  % adaptation mathmode of downarrow
+
+\newcommand{\cbox}[1]{\vspace{0.2cm}\noindent
+  \fbox{\parbox{.97\textwidth}{#1}}\vspace{0.2cm}}
+
+
+\newcommand{\fG}{\mathcal{G}}    % Generic Functor G
+\newcommand{\fW}{\mathcal{W}}    % Functor W
+\newcommand{\fL}{\mathcal{L}}    % Functor L
+\newcommand{\emp}{\epsilon}           % Empty Function
+
+
+\newcommand{\lbb}{\mathopen{[\![}}
+\newcommand{\rbb}{\mathclose{]\!]}}
+\newcommand{\bb}[1]{\lbb #1 \rbb}
+
+\def\pow#1{{\mathcal P_\omega}#1}
+\newcommand\pto\rightharpoonup
+\newcommand\E\varepsilon
+\newcommand{\pp}[1]{\|#1\|}
+
+\def\mean#1{[\![ \, #1 \, ]\!]}
+\def\expr#1{<\!< \, #1 \, >\!>}
+\def\ceil#1{\lceil\, #1 \,\rceil}
+
+\def\prob#1#2{#2 \cdot #1}
+
+\renewcommand{\cbox}[1]{\vspace{0.2cm}\noindent
+  \fbox{\parbox{.97\textwidth}{#1}}\vspace{0.2cm}}
+
+\newcommand{\pippo}[1]{\marginpar{{\bf Fil:} #1 }}    % Commento a lato, Filippo
+\newcommand{\fabio}[1]{\marginpar{{\bf Fab:} #1 }}    % Commento a lato, Fabio
+
+\renewcommand{\fG}{\mathcal{G}}    % Generic Functor G
+\renewcommand{\fW}{\mathcal{W}}    % Functor W
+\renewcommand{\fL}{\mathcal{L}}    % Functor L
+\renewcommand{\emp}{\epsilon}           % Empty Function
+
+%PRODUCTS
+\newcommand{\setproduct}{\times} %Cartesian Product of sets and functions
+\newcommand{\vectproduct}{\times} %(Bi)Product of Vector Spaces and linear maps
+\newcommand{\matrixproduct}{\times} %Product of Matrices
+\newcommand{\streamproduct}{\times} %Product of Streams
+\newcommand{\beh}[3]{\left[\!\left[ #1 \right]\!\right]^{#2}_{#3}} % Final Morphism
+\newcommand{\Beh}[3]{\Big[\!\!\Big[ #1 \Big]\!\!\Big ]^{#2}_{#3}} % Final Morphism
+\newcommand{\image}{\mathrm{im}} % image
+%%%% MICHELE'S MACRO
+\newcommand{\comp}{\circ}               % composition of functions and linear maps
+\newcommand{\dimn}{\mathrm{dim}}   % dimension
+\newcommand{\transp}{{}^{\mathrm{t}}}  % transpose
+\newcommand{\SR}{\mathbb{S}}            % generic field K
+\newcommand{\dual}[1]{ {#1}^\star}     % dual space
+\newcommand{\ddual}[1]{{#1}^{\star\star}}  % double dual space
+\newcommand{\ann}{o}                    % annihilator
+\newcommand{\kernel}{\mathrm{ker}} % kernel
+\newcommand{\wa}{{\sc wa}}             % "wa"
+\newcommand{\lwa}{{\sc lwa}}           % "lwa"
+\newcommand{\Span}{\mathrm{span}}  % span
+\newcommand{\R}{R}%{\mathcal{R}}    % relation
+\newcommand{\mik}[1]{\marginpar{ \textbf{MiB:} {\footnotesize #1}}} % for margin notes
+\newcommand{\mar}[1]{\marginpar{ \textbf{MaB:} {\footnotesize #1}}} % for margin notes
+
+
+
+%%%%%%%%%%%%%%%%% FABIO'S MACRO
+
+% ENVIRONMENTS
+
+\newenvironment{todo}{\begin{itemize}\renewcommand{\labelitemi}{$\blacktriangleright$}\item \footnotesize \scshape}{\end{itemize}}
+\newenvironment{Iff-RL}{\textbf{($\Rightarrow$)} }{\bigskip}
+\newenvironment{Iff-LR}{\textbf{($\Leftarrow$)} }{}
+
+\newtheorem{construction}{Construction}
+
+% FONTS
+
+\newcommand{\m}{\mathit}
+\def \: {\colon}
+\newcommand{\mb}{\mathbb}
+\newcommand{\mc}{\mathcal}
+\newcommand{\mf}{\mathbf}
+\def \p {\mathcal P}
+
+% FUNCTORS
+
+\newcommand\F{\mathcal{F}}
+\newcommand\V{\mathcal{V}}
+\newcommand\G{\mathcal{G}}
+\newcommand\D{\mathcal{D}}
+\newcommand\FR{\mathcal{R}}
+\newcommand\FS{\mathcal{S}}
+
+\def \incl {\iota} % inclusion functor
+
+% CATEGORIES
+
+\def \catC {\mf{C}}
+\def \Set {\mf{Set}}
+\def \catJ {\mf{J}}
+\def \catI {\mf{I}}
+
+\newcommand{\coalg}[1]{{\bf CoAlg}(#1)}
+
+%Lawvere theory
+\def \Lw {\mathcal{L}^{\m{op}}_{\Sigma}}
+
+%Right Kan Extension
+\newcommand\U{\mathcal{U}}
+\newcommand\K{\mathcal{K}}
+\newcommand{\set}{\mf{Set}}
+\newcommand{\prsh}[1]{\set^{#1}}
+
+%Logic programming
+\def \PP  {\widehat{\p _c}\widehat{\p _f}}
+\def \At {\m{At}}
+\def \SLD {\m{SLD}}
+\def \Var {\m{Var}} % variables of the language
+\newcommand{\Ter}[1]{\m{Ter}(#1)} % set of terms
+
+%trees and LTSs
+\def \Tand {T_{\wedge}}
+\def \Tor {T_{\vee}}
+\def\tr#1{\stackrel{#1}{\to}}          % Labeled Transitions 

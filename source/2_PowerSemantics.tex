@@ -1,0 +1,147 @@
+In this section we recall the coalgebraic framework for logic programming, as introduced in \cite{KomMcCuskerPowerAMAST10} for the ground case and in \cite{KomPowCALCO11,KomPowerCSL11} for the general case.
+
+For this purpose, first we fix some terminology and notation, mainly concerning category theory and logic programming.
+\pippo{La notazioen deve essere uniforme. Ad esempio o sempre $\K \F$ o sempre $\K(\F)$.}
+\pippo{Io userei $F$ e $G$ per i presheaves e non $\F$ e $\G$}
+\pippo{Pure i predicati hanno una arieta': formano una segnatura. Pertanto e' impreciso dire che prendiamo un insieme di predicati.}
+\fabio{Seguo la convenzione di Power di tenere distinta una segnatura $\Sigma$ di simboli per fuzione ed una segnatura (senza notazione) di simboli per predicati. In questo modo la Lawvere Theory e' definita solo in termini di $\Sigma$.}
+Given a category $\catC$, we denote with $|\catC|$ the category with the same objects as $\catC$ but no arrows apart the identities. With a little abuse of notation, we also write $o \in |\catC|$ to indicate that $o$ is an object of $\catC$. If $\catC$ is small, the set of arrows from $o_1$ to $o_2$, with $o_1, o_2 \in |\catC|$, is denoted with $\catC [o_1,o_2]$. A $\catC$-indexed presheaf is any functor $\G$ of type $\catC \to \Set$. We indicate with $\prsh{\catC}$ the category of $\catC$-indexed presheaves and natural transformations between them.
+Given an endofunctor $\F \: \catC \to \catC$, an $\F$-coalgebra on an object $o \in |\catC|$ is any arrow $p \: o \to \F (o)$. We denote with $\coalg{\F}$ the category of $\F$-coalgebrae and coalgebra morphisms \fabio{def of coalg.morphism needed?}.
+
+
+For our purposes a \emph{signature} $\Sigma$ is a set of function symbols $f,g,h,\dots$ each equipped with a fixed arity. Given a countably infinite list $\m{Var} = \{x_1,x_2,x_3,\dots\}$ of variables, we define the set $\Ter{\Sigma}$ of \emph{terms} over $\Sigma$ and $\Var$ as expected. The (contravariant) \emph{Lawvere Theory} associated with $\Sigma$ and $\m{Var}$ is a category $\Lw$ where objects are natural numbers, with $n \in |\Lw|$ representing variables $x_1,x_2,\dots,x_n$ from $\m{Var}$. Given $n,m \in |\Lw|$, the set $\Lw [n,m]$ consists of all $m$-tuples $<t_1,\dots,t_m>$ of terms from $\Ter{\Sigma}$ where only variables among $x_1,x_2,\dots,x_n$ occur. We call \emph{substitutions} the arrows of $\Lw$ and use Greek letters $\theta,\sigma, \tau, \dots$ to denote them.
+
+An \emph{alphabet} $\mc{A}$ consists of a signature $\Sigma$, a list of variables $\m{Var} = \{x_1,x_2,x_3,\dots\}$ and a set of predicate symbols $P, P_1, P_2,\dots$ each assigned an arity. Given a predicate symbol $P$ of arity $n$ and terms $t_1,\dots,t_n$, $P(t_1,\dots,t_n)$ is a \emph{formula} (also called an \emph{atom}). We use Latin capital letters $A,B,\dots$ for atoms. An atom $A = P(t_1,\dots,t_n)$ is \emph{ground} if each $t_i$ does not contain any variable. The set $\At$ consists of all atoms constructed from the symbols of the alphabet $\mc{A}$. Given a substitution $\theta = <t_1,\dots,t_m> \: n \to m$ and an atom $A$ with variables among $x_1,\dots,x_n$, we adopt the standard notation of logic programming in denoting with $A \theta$ the atom obtained by replacing $x_i$ with $t_i$ in $A$, for each $i \leq m$. Also we use the notation $\{A_1,\dots,A_n\}\theta$ as a shorthand for $\{A_1\theta,\dots,A_n\theta\}$.
+
+A \emph{logic program} $\mb{P}$ based on alphabet $\mc{A}$ consists of a finite set of clauses $C$ noted as $H :- B_1,\dots,B_k$, with $k \ls \omega$. Both $H$ and $B_1,\dots,B_k$ are atoms from $\At$, where $H$ is called the \emph{head} of $C$ and $B_1,\dots,B_k$ form the \emph{body} of $C$. We say that $\mb{P}$ is \emph{ground} if all clauses only contain ground atoms.
+
+\begin{todo} How much detail in the preliminaries of logic programming? \end{todo}
+
+\begin{todo} Think about some fixed terminology/notation on trees. To be defined: depth of a tree. \end{todo}
+
+\subsection{The Ground Case} \fabio{Personalmente mi piace una spiegazione `lenta' e chiara del caso ground, ma il limite di pagine con ogni probabilitá imporrá di accorciare, e questa sezione mi pare un buon punto dove puoi provare a togliere particolari.}
+
+We recall the modeling of variable-free programs through coalgebrae, as first presented in \cite{KomMcCuskerPowerAMAST10}. For the sequel we fix an alphabet $\mc{A}$, a set $\At$ of ground atoms based on $\mc{A}$ and a ground logic program $\mb{P}$ with clauses given by atoms from $\At$. The behavior represented by $\mb{P}$ is captured by a coalgebra $p \: \At \to \p_f \p_f (\At)$ on $\Set$, where $\p _f$ is the finite powerset functor and $p$ defined as follows:
+\begin{eqnarray}\label{Eq:def_coalg_p}
+% \nonumber to remove numbering (before each equation)
+  \nonumber
+  p \: \ A\ \mapsto\ \{\{B_1,\dots,B_n\} & \mid & H :- B_1,\dots,B_n \text{ is a clause of }\mb{P} \\
+                                         &      & \text{ and }A = H\}.
+\end{eqnarray}
+The idea is that each atom $A \in \At$ is associated with the set $p(A)$ where each element corresponds to a clause $H :- B_1,\dots,B_k$ of $\mb{P}$ whose head $H$ \emph{unifies with} $A$, i.e. (in the ground case) $H = A$. Each such element is itself a set, consisting of the atoms $B_1,\dots, B_k$ in the body of the clause.
+
+\begin{example}\label{Ex:coalgebra_p_ground} A program $\mb{P}$, the associated coalgebra and the value on an atom $A$.
+
+\end{example}
+
+The set $p(A)$ of example \ref{Ex:coalgebra_p_ground} can be displayed as a finite tree with two sorts of nodes, occurring at alternated depths. At depth $0$ and $2$ we have \emph{and-nodes}, which are labeled with atoms from $\At$. At depth $1$ we have \emph{or-nodes}, which corresponds to clauses whose head matches a given goal and remain unlabeled.
+
+The ``boolean'' terminology for the two sorts of nodes comes from an operational reading of this tree: the root is labeled with the atomic goal $A$ which one wants to refute in the program $\mb{P}$; each and-node represents an atomic subgoal which has to be refuted in order to refute $A$; each or-node (with an and-node, say labeled with $B$, as parent) represents an alternative way to try to refute $B$.
+
+Each depth of the tree represents a stage in this computation: the presence of multiple nodes at the same depth provides an explicit representation of \emph{and-parallelism} (depths where and-nodes occur) and \emph{or-parallelism} (depths where or-nodes occur) in our derivation strategy for the goal $A$. These are two main ways in which parallelism arises in logic programming, corresponding respectively to simultaneous proof-search of multiple atomic goals and parallel exploration of multiple attempts to refute the same goal \cite{Gupta94}. As mentioned in the introduction, and-or parallel implementations of logic programming have a standard representation of computations as \emph{parallel and-or derivation trees}.
+
+\begin{definition}\label{DEF:and-or_par_tree_ground} Let $\mc{A}$ be an alphabet. Given a logic program $\mb{P}$ and an atom $A$ based on $\mc{A}$, the and-or parallel derivation tree for $A$ in $\mb{P}$ is the possibly infinite tree $T$ satisfying the following properties:
+\begin{enumerate}
+  \item Each node in $T$ is either an and-node or an or-node.
+  \item Each or-node is labeled with $\bullet$.
+  \item Each and-node is labeled with one atom on the alphabet $\mc{A}$.
+  \item The root of $T$ is an and-node labeled with $A$.
+  \item For every and-node $s$ in $T$, let $A'$ be its label.  If $A'$ is unifiable with exactly $m$ distinct clauses $C_1,\dots,C_m$ in $\mb{P}$ via mgu's $\theta_1,\dots,\theta_m$, then $s$ has exactly $m$ children given by or-nodes, such that, for every $i \in m$, if $C_i\ =\ H^i :- B_1^i,\dots,B_k^i$, then the $i$th or-node has $k$ and-nodes $t_1,\dots,t_k$ as children, where $t_j$ is labeled with $B_j^i \theta$ for $1 \leq j \leq k$.
+\end{enumerate}
+\end{definition}\fabio{Q: Is the associated coalgebra a natural transformation in the non-ground case?}
+
+In the ground case considered here, the mgu's $\theta_1,\dots,\theta_m$ of the above definition are always identities. Given a goal $A$, the object $p(A) \in \p_f \p_f (\At)$ represents the prefix of depth 2 of the parallel and-or derivation tree of $A$ in $\mb{P}$. The full tree for $A$ is recovered as an element of $\mb{C}(\p _f \p _f)(\At)$, where $\mb{C}(\p _f \p _f)$ is the \emph{cofree comonad} on $\p_f \p_f$, standardly provided by the following construction \cite{Worrell99}.
+
+\begin{construction}\label{Constr:cofree_ground} We first construct the \emph{cofree $\p_f\p_f$-coalgebra} on $\At$. In this aim, consider the terminal sequence for the functor $\At \times \p_f \p_f (-) \: \Set \to \Set$, which consists of sequences of objects $X_{\alpha}$ and arrows $\delta_{\alpha}\: X_{\alpha+1} \to X_{\alpha}$, defined by induction on $\alpha$ as follows.
+\begin{eqnarray*}
+ % \nonumber to remove numbering (before each equation)
+   X_{\alpha} &:=& \left\{
+	\begin{array}{ll}
+        \At & \alpha = 0 \\
+		\At \times \p_f \p_f (X_{\beta}) & \alpha \mbox{ is a successor ordinal } \beta +1
+        % \\  \m{Lim}_{\beta \ls \alpha}\ X_{\beta} & \alpha \mbox{ is a limit ordinal}
+	\end{array}
+\right.\\
+  \delta_{\alpha} &:=& \left\{
+	\begin{array}{ll}
+        \pi_1 & \alpha = 0 \\
+		\m{Id}_{\At} \times \p_f \p_f (\delta_{\beta}) & \alpha \mbox{ is a successor ordinal } \beta +1
+	\end{array}
+\right.\\
+ \end{eqnarray*}
+For $\alpha$ a limit ordinal, $X_{\alpha}$ is given as a limit of the sequence and a function
+$\delta_{\alpha}\: X_{\alpha} \to X_{\beta}$ is given for each $\beta \ls \alpha$ by universal mapping property of $X_{\alpha}$.
+
+Both $\p _c$ and $\p _f$ are readily seen to be mono-preserving accessible functors. Then by theorem \cite[Th. 7]{Worrell99} we know that the sequence given above converges to a limit $X_{\gamma}$ such that $X_{\gamma} \cong X_{\gamma+1}$. Since $X_{\gamma+1}$ is defined as $\At \times \p_f \p_f X_{\gamma}$, there is a projection function $\pi_2 \: X_{\gamma +1} \to \p_f \p_f X_{\gamma}$ which makes $\pi_2 \circ \delta^{-1}_{\gamma} \:  X_{\gamma} \to \p_f \p_f X_{\gamma}$ the \emph{cofree $\p_f \p_f$-coalgebra} on $\At$.
+Since $\p_f \p_f$ is accessible, the functor $\FR \: \Set \to \coalg{\p_f \p_f}$ sending a set to its cofree $\p_f \p_f$-coalgebra is right adjoint to the forgetful functor $\V \: \coalg{\p_f \p_f} \to \Set$. Then $\V\FR \: \Set \to \Set$ is the \emph{cofree comonad} on $\p_f \p_f$, which we denote with $\mb{C}(\p_f \p_f)$.
+\end{construction}
+
+As the elements of the cofree comonad on $\p_f$ are standardly presented as finitely branching trees \cite{Worrell99}, one can depict elements of $\mb{C}(\p _f \p _f)(\At)$ as finitely branching trees with two sorts of nodes occurring at alternated depth (the $\p _f \p _f (-)$ component of the functor) and where one of the sorts is labeled (the $\At \times -$ component). We now define a $\mb{C}(\p _f \p _f)$-coalgebra $\overline{p}$ structure on $\At$. 
+
+\begin{construction}\label{Constr:coalgComonad_ground} Given the ground program $\mb{P}$ based on atoms from $\At$, let $p \: \At \to \p_f \p_f (\At)$ be the coalgebra associated with $\mb{P}$. We define a cone $\{p_{\alpha}\: \At \to X_{\alpha}\}_{\alpha \ls \gamma}$ on the terminal sequence of construction \ref{Constr:cofree_ground} as follows:
+\begin{eqnarray*}
+ % \nonumber to remove numbering (before each equation)
+   p_{\alpha} &:=& \left\{
+	\begin{array}{ll}
+        \m{Id}_{\At} & \alpha = 0 \\
+		\m{Id}_{\At} \times ((\p_f \p_f  (p_{\beta}) \circ p) & \alpha \mbox{ is a successor ordinal } \beta +1
+        % \\  \m{Lim}_{\beta \ls \alpha}\ X_{\beta} & \alpha \mbox{ is a limit ordinal}
+	\end{array}
+\right.\\
+\end{eqnarray*}
+For $\alpha$ a limit ordinal, a function $p_{\alpha}\: \At \to X_{\alpha}$ is provided by the universal mapping property of the limit $X_{\alpha}$. Then in particular $X_{\gamma} = \mb{C}(\p_f \p_f)(\At)$ yields a function $\overline{p}\: \At \to \mb{C}(\p_f \p_f)(\At)$.
+\end{construction}
+
+\begin{example} Same $A$, $\mb{P}$ of the previous example. Representation of $\overline{p}(A)$ as a tree.
+\end{example}
+
+Given an atomic goal $A \in \At$, the tree $\overline{p}(A) \in \mb{C}(\p _f \p _f)(\At)$ is built by iteratively applying the map $p$, first to $A$, then to each atom in $p(A)$, and so on. For each $m \ls \omega$, the arrow $p_{m}$ can be described as the mapping of $A$ into its parallel and-or derivation tree up to depth $m$. Then the limit $\overline{p}$ of all such approximations provides the full parallel and-or derivation tree of $A$, as stated by the following proposition.
+
+\begin{proposition}[\cite{KomMcCuskerPowerAMAST10}]\label{PROP:adequacy_ground} Given an alphabet $\mc{A}$ and a ground logic program $\mb{P}$ based on $\mc{A}$, let $\overline{p}$ be defined from $\mb{P}$ according to construction \ref{Constr:coalgComonad_ground}. Then for every atom $A$ the value $\overline{p}(A)$ represents the parallel and-or derivation tree of $A$ in $\mb{P}$.
+\end{proposition}
+
+\subsection{The General Case}
+
+We recall the extension of the coalgebraic semantics to arbitrary (i.e. possibly with variables) logic programs, as introduced in \cite{KomPowCALCO11,KomPowerCSL11}. As mentioned in the introduction, a natural way to do that would be to generalize the definition of coalgebrae $p$ and $\overline{p}$ in such a way that the associated notion of computation is represented by parallel and-or derivation trees (definition \ref{DEF:and-or_par_tree_ground}). Unfortunately, in presence of variables these trees are not guaranteed to represent sound derivations. The problem lies in the presence of variable dependencies and the use of unification, which make derivations for logic programs inherently \emph{sequential} processes \cite{MitchellSeqUnification}.
+
+\begin{example} Unsound and-or tree: the LIST program and the goal $\m{List}(\m{cons}(x,\m{cons}(y,x)))$.
+\end{example}
+
+In \cite{KomPowCALCO11} Komendantskaya and Power obviate to this difficulty by shaping a variant of and-or trees - called \emph{coinductive forests} - where unification is restricted to the case of \emph{term matching}.
+\begin{definition}\label{Def:coinductive_trees_Power} Let $\mc{A}$ be an alphabet. Fix a logic program $\mb{P}$, an atom $A$ based on $\mc{A}$ and a number $k \leq \omega$. The \emph{$k$-coinductive forest} for $A$ in $\mb{P}$ is the possibly infinite tree $T$ satisfying properties 1-4 of definition \ref{DEF:and-or_par_tree_ground} and property 5 replaced by the following:
+ \begin{itemize}
+  \item for every and-node $s$ in $T$, let $A'$ be its label.  Children of $s$ are or-nodes in 1-1 correspondence with clauses $C\ =\ H:- B_1,\dots,B_n$ of $\mb{P}$ such that $A' = H \theta$ for some substitution $\theta$ and $B_1\theta,B_n\theta$ have variables among $x_1,\dots,x_k$. For each such child $t$, let $C\ =\ H:- B_1,\dots,B_n$ and $\theta$ respectively the clause and the substitution associated with $t$. Then $t$ has exactly $n$ and-nodes $t_1,\dots,t_n$ as children, where $t_j$ is labeled with $B_j \theta$ for $1 \leq j \leq n$.
+ \end{itemize}
+\end{definition}
+
+\begin{todo} Possible remarks/footnote to include:\fabio{Non ho giá messo questi remark perché non sono ancora sicuro che questa sia la nozione piú `giusta' da utilizzare nell'articolo, tra quelle introdotte da Power.}
+\begin{itemize}
+  \item why do we parameterize the definition to $k$? The reader will wonder about that.
+  \item Our coinductive forests are not sets of coinductive trees as defined in \cite{KomPowerCSL11} but they `glue' them together.
+\end{itemize}
+\end{todo}
+
+Contrary to unification, the term-matching algorithm is \emph{parallelizable} \cite{MitchellSeqUnification}, meaning that the explicit and-or parallelism exhibited by forests does not lead to unsound derivations \cite[Th. 4.8]{KomPowerCSL11}. The intuitive reason is that, at each stage of the computation, one considers only the substitutions that do not apply to the current goal, meaning that also the ``previous history'' of the computation remains uncorrupted.
+
+We now recall from \cite{KomPowCALCO11} the categorical formalization of this class of trees. First let us fix a signature $\Sigma$, a list $\m{Var} = \{x_1,x_2,\dots\}$ of variables and an alphabet $\mc{A}$ on $\Sigma$ and $\m{Var}$. A collection of atoms (for which we overload the notation used in the base case) based on $\mc{A}$ is modeled as a presheaf $\At \: \Lw \to \Set$. The index category is the (contravariant) \emph{Lawvere Theory} $\Lw$ associated with $\Sigma$, as defined in the preliminaries. For each natural number $n \in |\Lw|$, $\At (n)$ is defined as the set of atoms with variables among $x_1,\dots,x_n$. Given an arrow $\theta \in \Lw(n,m)$, the function $\At(<t_1,\dots,t_n>)\: \At(n) \to \At(m)$ is defined by substitution, i.e. $\At(\theta)(A)\ := A \theta$.
+
+The next step is to generalize the definition of the coalgebra $p$ associated to a logic program $\mb{P}$. In this aim, recall from definition \ref{Def:coinductive_trees_Power} how $p$ should act on an atom $A$, for a fixed $k \ls \omega$:
+ \begin{align}\label{Eq:KomPow_termMatching}
+              A    \mapsto \{ \{B_1,\dots,B_j\}\theta \mid & H :- B_1,\dots,B_j \text{ is a clause of }\mb{P}\text{,} \nonumber \\
+                                                           &  A = H \theta \text{ and } \nonumber\\
+                                                           &  B_1\theta,\dots,B_j\theta \in \At(k)\}.
+ \end{align}
+%The above equation defines a function $p^{\sharp} \: \At(n) \to \p_c \p_f \At(n)$, where $n$ is the highest number of distinct variables
+For each clause $H :- B_1,\dots,B_k$, there might be infinitely (but countably) many substitutions $\theta$ such that $A = H \theta$. Thus the object on the right-hand side of \eqref{Eq:KomPow_termMatching} will be associated with the functor $\p_c \p_f \: \Set \to \Set$, where $\p_c$ and $\p_f$ are respectively the countable powerset functor and the finite powerset functor. In order to formalize this as a coalgebra on $\At \: \Lw \to \Set$, we need to lift the analysis from $\Set$ to $\prsh{\Lw}$. For this purpose, we consider liftings $\widehat{\p_c} \: \prsh{\Lw} \to \prsh{\Lw}$ and $\widehat{\p_f}\: \prsh{\Lw} \to \prsh{\Lw}$, standardly defined on presheaves $\F \: \Lw \to \Set$ by precomposition respectively with $\p_c$ and $\p_f$. Then one would like to fix \eqref{Eq:KomPow_termMatching} as the definition of the $k$-component $p(k)$ of a natural transformation $p\: \At \to \PP (\At)$. The key problem with this formulation is that $p$ would \emph{not} be a natural transformation, as shown by the following example.
+\begin{example}\label{Ex:non_compositional} The LIST program, the two goals $\m{List}(x)$, $\m{List}(\m{Nil})$ and the substitution ${x\mapsto \m{Nil}}$.
+
+\end{example}
+In \cite{KomPowCALCO11} the authors overcome this difficulty by relaxing the naturality requirement. The presheaf $\At$ is re-defined as a functor $\widetilde{\At} \: \Lw \to \m{Poset}$ and $p$ as a \emph{lax natural transformation} $\widetilde{p} \: \widetilde{\At} \to \widetilde{\p_c}\widetilde{\p_c}(\At)$, where $\widetilde{\p_c}\widetilde{\p_f} \: \m{Lax}(\Lw,\m{Poset})\to \m{Lax}(\Lw,\m{Poset})$ is the extension of $\PP \: \prsh{\Lw} \to \prsh{\Lw}$ to $\m{Poset}$-valued functors. Then $\widetilde{p}$ becomes a $\widetilde{\p_c}\widetilde{\p_c}$-coalgebra in the category $\m{Lax}(\Lw,\m{Poset})$ of locally ordered functors $\F: \Lw \to \m{Poset}$ and lax natural transformations.
+
+We refer to \cite[Ch.4]{KomPowCALCO11} for further details. The lax approach allows the coalgebra $\widetilde{p}$ to be defined according to \eqref{Eq:KomPow_termMatching} on each component $n \in |\Lw|$. However, it has also introduce several shortcomings. Unlike the categories $\Set$ and $\prsh{\Lw}$, $\m{Lax}(\Lw,\m{Poset})$ is neither complete nor cocomplete, meaning that a cofree comonad on $\widetilde{\p_c}\widetilde{\p_c}$ cannot be retrieved through the standard constructions \ref{Constr:cofree_ground} and \ref{Constr:coalgComonad_ground} that were used in the ground case. Moreover, the category of $\widetilde{\p_c}\widetilde{\p_c}$-coalgebrae becomes problematic, because the commutativity property of coalgebra maps does not cohere well with the laxness of arrows in $\m{Lax}(\Lw,\m{Poset})$. These two issues force the formalization of non-ground logic program to use quite different (and more sophisticated \fabio{unnatural, sophisticated...choose the appropriate connotation.}) categorical tools than the ones employed for the ground case.
+
+Even more significantly, the lax coalgebra map $\widetilde{p^{\sharp}}$ induces a semantics which is not \emph{compositional}. The same square of example \ref{Ex:non_compositional} still does not commute in the lax setting, meaning that the actions of applying a substitution and making a derivation step produce different results according to the order in which we perform them.
+
+\begin{todo} Insert further motivations? Cfr. also the end of the Introduction \end{todo}
+
+\begin{todo} Perhaps we could state the following Adequacy theorem: $n$-coinductive forest for $A \in At(n)$ = $\overline{p}(n)(A)$. Depends if it is useful/essential...\end{todo} 

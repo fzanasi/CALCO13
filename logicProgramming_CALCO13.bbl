@@ -1,0 +1,56 @@
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{GBM{\etalchar{+}}07}
+
+\bibitem[AR94]{adamek/rosicky:1994}
+J.~Ad{\'a}mek and J.~Rosick{\'y}.
+\newblock {\em Locally Presentable and Accessible Categories}.
+\newblock Cambridge University Press, 1994.
+
+\bibitem[DKM84]{MitchellSeqUnification}
+Cynthia Dwork, Paris~C. Kanellakis, and John~C. Mitchell.
+\newblock On the sequential nature of unification.
+\newblock {\em The Journal of Logic Programming}, 1(1):35 -- 50, 1984.
+
+\bibitem[GBM{\etalchar{+}}07]{GuptaBMSM07}
+Gopal Gupta, Ajay Bansal, Richard Min, Luke Simon, and Ajay Mallya.
+\newblock Coinductive logic programming and its applications.
+\newblock In {\em ICLP}, pages 27--44, 2007.
+
+\bibitem[GC94]{Gupta94}
+Gopal Gupta and Vítor~Santos Costa.
+\newblock Optimal implementation of and-or parallel prolog.
+\newblock In {\em PARLE}, pages 71--92, 1994.
+
+\bibitem[GPA{\etalchar{+}}01]{Gupta2001}
+Gopal Gupta, Enrico Pontelli, Khayri~A.M. Ali, Mats Carlsson, and Manuel~V.
+  Hermenegildo.
+\newblock Parallel execution of prolog programs: a survey.
+\newblock {\em ACM Trans. Program. Lang. Syst.}, 23(4):472--602, July 2001.
+
+\bibitem[KMP10]{KomMcCuskerPowerAMAST10}
+Ekaterina Komendantskaya, Guy McCusker, and John Power.
+\newblock Coalgebraic semantics for parallel derivation strategies in logic
+  programming.
+\newblock In {\em AMAST}, pages 111--127, 2010.
+
+\bibitem[KP11a]{KomPowerCSL11}
+Ekaterina Komendantskaya and John Power.
+\newblock Coalgebraic derivations in logic programming.
+\newblock In {\em CSL}, pages 352--366, 2011.
+
+\bibitem[KP11b]{KomPowCALCO11}
+Ekaterina Komendantskaya and John Power.
+\newblock Coalgebraic semantics for derivations in logic programming.
+\newblock In {\em CALCO}, pages 268--282, 2011.
+
+\bibitem[ML98]{mclane}
+Saunders Mac~Lane.
+\newblock {\em {Categories for the Working Mathematician}}.
+\newblock Graduate Texts in Mathematics. Springer, 2nd edition, September 1998.
+
+\bibitem[Wor99]{Worrell99}
+James Worrell.
+\newblock Terminal sequences for accessible endofunctors.
+\newblock {\em Electronic Notes in Theoretical Computer Science}, 19, 1999.
+
+\end{thebibliography}

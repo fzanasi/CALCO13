@@ -1,0 +1,79 @@
+\documentclass{llncs}
+
+\include{macros}
+
+\begin{document}
+\title{Coalgebraic Semantics for Logic Programming via Saturation}
+
+\maketitle
+\abstract{TODO}
+
+
+\section{Introduction}
+
+\input{source/1_introduction.tex}
+
+\section{Coalgebraic Semantics for Logic Programming}
+
+\input{source/2_PowerSemantics.tex}
+
+\section{A Saturated Semantics for Logic Programming}\label{SEC:SemLogProg}
+
+\input{source/3_satSemantics.tex}
+
+\section{Desaturation}
+
+\input{source/4_desaturation.tex}
+
+\section{Bonus tracks?}
+(A questo punto mi sa di no...)
+
+\section{Conclusions}
+
+\bibliographystyle{alpha}
+\bibliography{catBib}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% RUBBISH %%%%%%%%%%%%%55
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%% SECTION 2 %%%%%%%%%%%%%
+%A naive attempt to accommodate both desiderata is to model $p^{\sharp}$ as a sort of `and-or parallel implementation' of the standard $\SLD$ resolution algorithm [CIT]. Given an atom $A \in \At(n)$ for some $n \in |\Lw|$, the function $p^{\sharp}(n)$ is given as follows:
+% \begin{eqnarray}\label{eq:OneStepUnification}
+%    \nonumber
+%    A\ \mapsto\ \{ \{\theta(B_1),\dots,\theta(B_k)\} & \mid & H :- B_1,\dots,B_k \text{ is a clause of }\mb{P}\\
+%                                         &      &   \text{and }\theta \text{ is the mgu of }A \text{ and }H\}.
+% \end{eqnarray}
+%This means that each component $p^{\sharp}(n)$ can be assigned a type $\At(n) \to \p_f \p_f(\At)$. Then $p^{\sharp}$ is a natural transformation of This amounts to define $p^{\sharp}$ as a natural transformation from $\At$ to $\PP (\At)$, where $\widehat{\p _c}$ and $\widehat{\p _f}$ are the $|\Lw|$-liftings respectively of the countable powerset functor $\p_c \: \Set \to \Set$ and the finite powerset functor $\p_f \: \Set \to \Set$, defined by precomposition.

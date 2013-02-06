@@ -1,0 +1,26 @@
+
+In \cite{KomMcCuskerPowerAMAST10} Komendantskaya, McCusker and Power introduced a coalgebraic semantics for ground (i.e. variable-free) logic programs. Given a set $\At$ of ground atoms, a program $\mb{P}$ with atoms from $\At$ is encoded as a coalgebra $p \: \At \to \p_f \p_f (\At)$ on $\Set$, where $\p _f$ is the finite powerset functor. The idea is that each atom $A \in \At$, now considered as a \emph{goal}, is associated with the set $p(A)$ where each element corresponds to a clause $H :- B_1,\dots,B_k$ of $\mb{P}$ whose head $H$ \emph{unifies with} $A$, i.e. (in the ground case) $H = A$. Each such element is itself a set, consisting of the atoms $B_1,\dots, B_k$ in the body of the clause.
+
+The main result of \cite{KomMcCuskerPowerAMAST10} concerns the construction of a coalgebra $\overline{p} \: \At \to \mb{C}(\p _f \p _f)(\At)$, where $\mb{C}(\p _f \p _f)$ is the \emph{cofree comonad} on $\p_f \p_f$. Given an atomic goal $A \in \At$, the object $\overline{p}(A) \in \mb{C}(\p _f \p _f)(\At)$, obtained by iteratively applying the map $p$, can be depicted as the \emph{and-or parallel derivation tree} for $A$ \cite{Gupta94,Gupta2001,GuptaBMSM07}.
+
+This framework is extended in \cite{KomPowCALCO11} to arbitrary logic programs. Differently from the ground case, the presence of variables requires $p$ to deal with \emph{substitution instances} of atoms. On the other hand, one wants to maintain the primary feature of the ground case, which is the explicit and-or parallelism exhibited by the notion of derivation tree associated with the coalgebra $p$. Unfortunately, for arbitrary logic programs and-or parallel derivation trees are not guaranteed to represent sound derivations \cite{Gupta94}. The problem lies in the presence of variable dependencies and the use of unification, which make derivations for logic programs inherently \emph{sequential} processes \cite{MitchellSeqUnification}.
+
+Komendantskaya and Power \cite{KomPowCALCO11} obviate to this difficulty by shaping a variant of and-or parallel derivation trees - called \emph{coinductive forest} - where unification is restricted to the case of \emph{term matching}. Contrary to unification, the term-matching algorithm is \emph{parallelizable} \cite{MitchellSeqUnification}, meaning that the and-or parallelism exhibited by coinductive forests does not lead to unsound derivations. This comes at price of having a semantics which is not \emph{compositional}, in the sense that, for some atom $A$ and substitution $\theta$,
+\begin{eqnarray*}
+% \nonumber to remove numbering (before each equation)
+  \|A \theta\|&\neq& \|A\|\overline{\theta}
+\end{eqnarray*}
+where $\|A\|$ is the coinductive forest associated to $A$, $A \theta$ denotes the result of applying $\theta$ to $A$ and $\|A\|\overline{\theta}$ denotes the result of applying $\theta$ to each atom in $\|A\|$.
+
+In this paper we propose a different approach to the semantics of arbitrary logic programs, where compositionality is achieved through \emph{saturation} techniques [CIT,CIT]. In our terminology, saturating an atom means to take all its (also non-ground) substitution instances. The term-matching approach in \cite{KomPowCALCO11} only operates a saturation on the program side, by trying to match a given goal with all possible substitution instances of heads in the program. What we suggest is to saturate also on the goal side, and shift the term matching to a correspondence between substitution instances of the goal and substitution instances of heads in the program.
+
+ \begin{equation} \xymatrix{ \text{Atom A} \ar[d]^{\m{saturation}} & & \ar[d]^{saturation} \text{Heads in the program} \\
+ \text{subst. instances of A} & & \ar@{<->}[ll]^-{\text{term-matching}} \text{subst. instances of heads} }\label{Eq:Draw_idea_saturation}
+ \end{equation}
+
+\begin{todo} Other features and description of our proposal to be added at a later stage. In particular:
+ \begin{itemize}
+   \item Motivation concerning the categorical formalization (e.g. $\prsh{\Lw}$ is a (co)complete category and allow use to rephrase the constructions of the ground case, whereas this is not possible in the category of locally ordered endofunctors and lax natural transformations considered by Power).
+   \item Remark that our saturated semantics yields a sound notion of derivation, by reduction to Power's semantics.
+ \end{itemize}
+ \end{todo} 

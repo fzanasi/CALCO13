@@ -1,0 +1,137 @@
+As outlined in the introduction, one of the main features of Komendatskaya and Power's coinductive forests is to represent (sound) and-or parallel derivation of goals. In \cite{KomPowerCSL11} this notion of computation leads to a resolution algorithm exploiting the two forms of parallelism.
+Motivated by these developments, we include coinductive forests in our framework, showing how they can be obtained as a ``desaturation'' of saturated derivation trees. This also provides a correctness and completeness theorem of saturated derivation trees with respect to $\SLD$-resolution, as a consequence of the analogous result shown for coinductive forests in \cite[Th.4.8]{KomPowerCSL11}.
+
+For this purpose, we recall from the previous section that the notion of behavior associated with coinductive forests can be encoded as a $\PP$-coalgebra in $\prsh{|\Lw|}$ according to \eqref{eq:SatTermMatching}, which trivially satisfies the naturality requirement by discreteness of $|\Lw|$. Just as $\prsh{\Lw}$, the category $\prsh{|\Lw|}$ is (co)complete and locally presentable, meaning that we can provide the cofree comonad $\mc{C}(\PP)\: \prsh{|\Lw|} \to \prsh{|\Lw|}$ following the same steps of construction \ref{Constr:cofree_sat}, with $\PP  \: \prsh{|\Lw|} \to \prsh{|\Lw|}$ in place of $\FS \: \prsh{\Lw} \to \prsh{\Lw}$. We state its definition for later reference.
+\begin{construction}\label{Constr:cofree_PP} The terminal sequence for the functor $\U\At \times \PP (-) \: \prsh{|\Lw|} \to \prsh{|\Lw|}$ consists of sequences of objects $Y_{\alpha}$ and arrows $\lambda_{\alpha}\: Y_{\alpha+1} \to Y_{\alpha}$, defined by induction on $\alpha$ as follows.
+\begin{eqnarray*}
+ % \nonumber to remove numbering (before each equation)
+   Y_{\alpha} &:=& \left\{
+	\begin{array}{ll}
+        \U\At & \alpha = 0 \\
+		\U\At \times \PP (Y_{\beta}) & \alpha \mbox{ is a successor ordinal } \beta +1
+        % \\  \m{Lim}_{\beta \ls \alpha}\ X_{\beta} & \alpha \mbox{ is a limit ordinal}
+	\end{array}
+\right.\\
+  \lambda_{\alpha} &:=& \left\{
+	\begin{array}{ll}
+        \pi_1 & \alpha = 0 \\
+		\m{Id}_{\U\At} \times \PP (\lambda_{\beta}) & \alpha \mbox{ is a successor ordinal } \beta +1
+	\end{array}
+\right.\\
+ \end{eqnarray*}
+For $\alpha$ a limit ordinal, $Y_{\alpha}$ and $\lambda_{\alpha}$ are defined as expected. As stated in proposition \ref{Prop:terminalForKPPU_converges}, $\PP$ is a mono-preserving accessible functors. Then by theorem \cite[Th. 7]{Worrell99} we know that the sequence given above converges to a limit $Y_{\chi}$ such that $Y_{\chi} \cong Y_{\chi+1}$ and $Y_{\chi}$ is the value of $\mc{C}(\PP)\: \prsh{|\Lw|} \to \prsh{|\Lw|}$ on $\U\At$, where $\mc{C}(\PP)$ is the cofree comonad on $\PP$ induced by the terminal sequence analogously to construction \ref{Constr:cofree_ground}.
+\end{construction}
+
+We now have a $\Lw$-indexed presheaf $\mc{C}(\FS)(\At)$ and a $|\Lw|$-indexed presheaf $\mc{C}(\PP)(\At)$, representing respectively the space of saturated derivation trees and of coinductive forests. The next construction provides a translation from the former to the latter notion of computation, in the form of a natural transformation $\overline{d} \: \U \big( \mc{C}(\FS)(\At)\big) \to \mc{C}(\PP)(\At)$ in $\prsh{|\Lw|}$. The key ingredient of this translation is provided by the \emph{counit} $\epsilon$ of the saturation adjunction $\U \dashv \K$. Given a presheaf $\F \: |\Lw| \to \Set$, this is a natural transformation $\epsilon_{\F} \: \K\U(\F) \to \F$ in $\prsh{|\Lw|}$ defined as follows:
+\begin{align*}
+% \nonumber to remove numbering (before each equation)
+  \epsilon_{\F} (n)\: \prod_{\theta \in \Lw[n,m]} \F (m)  & \to \F(n) \\
+ < x_{\theta} >_{\theta \in \Lw[n,m]} & \mapsto x_{\m{Id}_{n}}.
+\end{align*}
+where $x_{\m{Id}_{n}}$ is the element of the input tuple which is indexed by the identity substitution $\m{Id}_{n} \in \Lw[n,n]$. In the logic programming perspective, the intuition is that, while the unit of the adjunction provided the saturation of a goal, the counit reverses the process. It takes the saturation of a goal and gives back the substitution instance given by the identity substitution, that is, the goal itself.
+
+The construction of $\overline{d}$ is supplied as a nodewise application of this ``desaturation'' process to the saturated derivation trees in $\U \big( \mc{C}(\FS)(\At)\big) = \mc{C}(\FS)(\At)$.
+
+\begin{construction} Consider the image of the terminal sequence for $X_{\gamma} = \mb{C}(\FS)(\At)$ (construction \ref{Constr:cofree_sat}) under the forgetful functor
+$\U\: \prsh{\Lw} \to \prsh{|\Lw|}$. We define a sequence of natural transformations $\{d_{\alpha}\: \U(X_{\alpha}) \to Y_{\alpha} \}_{\alpha\ls\gamma}$ as follows.
+ \begin{eqnarray}   \label{eq:desat_cone_sigma}
+ % \nonumber to remove numbering (before each equation)
+   d_{\alpha} &:=& \left\{
+	\begin{array}{ll}
+        \m{Id}_{\U \At} & \alpha = 0 \\
+		\m{Id}_{\U \At} \times \big(\PP (d_{\beta}) \circ \epsilon_{\PP (\U X_{\beta})}\big) & \alpha \mbox{ is a succ. ord. } \beta +1
+	\end{array}
+\right.
+ \end{eqnarray}
+Here $\epsilon_{\PP \U X_{\beta}}\: \U\K\PP \U X_{\beta} \to \PP \U X_{\beta}$ is the instantiation at $\PP \U X_{\beta}$ of the counit of
+the adjunction $\U \dashv \K$. Concerning the successor case, observe that
+$\m{Id}_{\U \At} \times \big(\PP (\m{ds}_{\beta}) \circ \epsilon_{\PP (\U X_{\beta})}\big)$
+is in fact an arrow from $\U\At \times \U\K\PP(\U X_{\beta})$ to $Y_{\beta+1} = \U\At \times \PP (Y_{\beta})$. However, the former is isomorphic to $\U (X_{\beta+1}) = \U \big(\At \times \K\PP(\U X_{\beta})\big)$, because $\U$ is a right adjoint (namely to the left Kan extension along $i \: |\Lw| \hookrightarrow \Lw$) and thence it preserves limits.
+
+For $\alpha$ a limit ordinal, a natural transformation $d_{\alpha}\: \U(X_{\alpha}) \to Y_{\alpha}$ is provided by the limiting property of $Y_{\alpha}$. In order to show that the limit case is well defined, observe that, for each limit ordinal $\alpha \ls \gamma$, for every $\beta \ls \alpha$, the following square commutes
+\[\xymatrix{
+& \U (X_{\alpha}) \ar[r]_{d_{\alpha}} & Y_{\alpha} \\
+& \U (X_{\alpha +1}) \ar[r]_{d_{\alpha +1}} \ar[u]^{\U(\delta_{\alpha})} & Y_{\alpha +1} \ar[u]_{\lambda_{\alpha}}\\
+}
+\]
+% $$\lambda_{\beta} \circ d_{\beta +1}  = \U (\delta_{\beta}) \circ d_{\beta}$$
+as can be easily checked by transfinite induction, using the fact that $\epsilon_{\PP (\U X_{\beta})}$ is a natural transformation, for each such $\beta$.
+
+We turn turn to the definition of a natural transformation $\overline{d} \: \U \big( \mc{C}(\FS)(\At)\big) \to \mc{C}(\PP)(\At)$. Observe that, since $\PP$ is part of $\FS$, the terminal sequence for the former cannot converge in less steps than the one for the latter. Therefore the ordinal $\chi$ is not bigger than $\gamma$, where $Y_{\chi} = \mc{C}(\PP)(\At)$ is given as in construction \ref{Constr:cofree_PP}. It follows that we also have a natural transformation $\overline{d} \: \U(X_{\gamma}) \to Y_{\chi}$, given by the natural transformation $d_{\chi} \: \U(X_{\chi}) \to Y_{\chi}$ together with the limiting property of $\U(X_{\gamma})$ on $\U(X_{\chi})$.
+\end{construction}
+
+
+
+
+\begin{todo} Section to be completed \end{todo}
+
+
+
+\begin{comment}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% MATERIALE DAI "BOZZETTI" CHE POTREBBE ESSERE RIUTILIZZATO PER COMPLETARE LA SEZIONE %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pippo{Secondo me $ds_\alpha$ e' definito male: $(\PP (\m{ds}_{\beta})$ ha come dominio $\PP \U X_{\gamma}$ e non $\PP \U X_{\beta}$.}
+Our next step is to define a cone $\{{\m{ds}}_{\alpha}\: \U(X_{\gamma}) \to Y_{\alpha} \}_{\alpha\ls\zeta}$,
+where $X_{\gamma}$ is the carrier of the $\FS$-coalgebra $\mb{C}(\FS)(\At, \m{rs})$ in the category $\prsh{\Lw}$.
+For this purpose, we consider the image of the final sequence for $\mb{C}(\FS)(\At, \m{rs})$ under the forgetful functor
+$\U\: \prsh{\Lw} \to \prsh{|\Lw|}$.
+This gives a cone $\{\U(q_{\alpha})\: \U(X_{\gamma}) \to \U(X_{\alpha}) \}_{\alpha\ls\gamma}$ having $\U(X_{\gamma})$ as vertex.
+Then we introduce a family of natural transformations $\{\sigma_{\alpha}\: \U(X_{\alpha}) \to Y_{\alpha} \}_{\alpha\ls\gamma}$ as follows.
+ \begin{eqnarray}   \label{eq:desat_cone_sigma}
+ % \nonumber to remove numbering (before each equation)
+   \sigma_{\alpha} &:=& \left\{
+	\begin{array}{ll}
+        \m{Id}_{\U \At} & \alpha = 0 \\
+		\m{Id}_{\U \At} \times \big(\PP (\m{ds}_{\beta}) \circ \epsilon_{\PP \U X_{\beta}}\big) & \alpha \mbox{ is a succ. ord. } \beta +1
+	\end{array}
+\right.
+ \end{eqnarray}
+Here $\epsilon_{\PP \U X_{\beta}}\: \U\K\PP \U X_{\beta} \to \PP \U X_{\beta}$ is the instantiation at $\PP \U X_{\beta}$ of the counit of
+the adjunction $\U \dashv \K$. Concerning the successor case, observe that
+$\m{Id}_{\U \At} \times \big(\PP (\m{ds}_{\beta}) \circ \epsilon_{\PP \U X_{\beta}}\big)$
+is in fact an arrow from $\U\At \times \U\K\PP\U X_{\beta}$ to $Y_{\beta+1} = \U\At \times \PP Y_{\beta}$. However, the former is isomorphic to $\U (X_{\beta+1}) = \U (\At \times \K\PP\U X_{\beta})$, because $\U$ is a right adjoint (namely to the left Kan extension along $i \: |\Lw| \hookrightarrow \Lw$) and thence it preserves limits.
+
+For $\alpha$ a limit ordinal, a natural transformation $\sigma_{\alpha}\: \U(X_{\alpha}) \to Y_{\alpha}$ is provided by the universal mapping property of $Y_{\alpha}$. The limit case is well defined: for each limit ordinal $\alpha$, we can show that $\lambda_{\beta} \circ {\sigma}_{\beta +1}  = \U\delta_{\beta}{\sigma}_{\beta}$ for every $\beta \ls \alpha$.
+
+\[\xymatrix{
+& \U X_{\alpha} \ar[rr]& & Y_{\alpha}\\
+\U X_{\gamma} \ar[ru]^{\U q_{\alpha}} \ar[rd]_{\U q_{\alpha +1}} \\
+& \U X_{\alpha +1} \ar[rr] \ar[uu]^{\U\delta_{\alpha}} & & Y_{\alpha +1} \ar[uu]_{\lambda_{\alpha}}\\
+}
+\]
+
+\begin{todo}Insert proof of this commutativity property. \end{todo}
+
+Finally the definition of our cone $\{{\m{ds}}_{\alpha}\: \U(X_{\gamma}) \to Y_{\alpha} \}_{\alpha\ls\zeta}$ over the final sequence for $\PP$ is given as follows:
+ \begin{eqnarray}   \label{eq:desat_cone}
+ % \nonumber to remove numbering (before each equation)
+   \m{ds}_{\alpha} &:=& \sigma_{\alpha} \circ \U(q_{\alpha}).
+ \end{eqnarray}
+
+\pippo{Forse la spiegazione e' piu' chiara se si introduce prima il quadrato e poi il triangolo...}
+
+Definition \eqref{eq:desat_cone} determines a natural transformation $\m{ds}_{\alpha}\: U(X_{\gamma}) \to Y_{\alpha}$ for all $\alpha \ls \gamma$.
+In fact $\zeta$ is smaller than $\gamma$, \pippo{La footnote e' davvero molto confusa}because the final sequence for $\K\PP\U$ cannot converge in less steps than the one for $\PP$\footnote{In fact, even if $\gamma$ was smaller than $\zeta$, we know that $X_{\gamma}$ is isomorphic to $X_{\chi}$ for all ordinal $\chi \gr \gamma$. Then in particular $U(X_{\zeta}) \cong U(X_{\gamma})$ would be the vertex of a cone defined as in \eqref{eq:desat_cone} for all $\alpha < \zeta$.}. It follows that \eqref{eq:desat_cone} defines an arrow $\m{ds}_{\alpha}\: U(X_{\gamma}) \to Y_{\alpha}$ for all $\alpha \ls \zeta$.
+
+What remains to show is that $\{\m{ds}_{\alpha}\: \U(X_{\gamma}) \to Y_{\alpha} \}_{\alpha\ls\zeta}$ is indeed a cone: this follows by commutativity of the squares determined by the $\sigma_{\alpha}$s and the triangles determined by the $\U(q_{\alpha})$, as shown above.
+
+The universal mapping property of $Y_{\zeta}$ provides an arrow $\overline{\m{ds}} \: X_{\gamma} \to Y_{\zeta}$.
+Given an atom $A \in \At(n)$, we consider the application of $\overline{\m{ds}}$ to its saturated derivation tree
+$\mb{T}_G \in X_{\gamma}(n) = U(X_{\gamma})(n)$.
+
+\begin{todo} Intuition on the structure of $\overline{\m{ds}}(n)(\mb{T}_G)$, on the base of the commuting property of $\overline{\m{ds}}$. \end{todo}
+
+\begin{proposition} Let $G \in \At(n)$ be a goal and $\mb{T}_G \in X_{\gamma}(n) = U(X_{\gamma})(n)$ its saturated derivation tree. Then $\overline{\m{ds}}(n)(\mb{T}_G)$ is the coinductive forest for $G$.
+\end{proposition}
+
+
+
+
+\end{comment} 

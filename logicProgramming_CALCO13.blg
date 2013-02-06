@@ -1,0 +1,16 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: logicProgramming_CALCO13.aux
+The style file: alpha.bst
+Database file #1: catBib.bib
+A bad cross reference---entry "KomMcCuskerPowerAMAST10"
+refers to entry "DBLP:conf/amast/2010", which doesn't exist
+A bad cross reference---entry "GuptaBMSM07"
+refers to entry "DBLP:conf/iclp/2007", which doesn't exist
+A bad cross reference---entry "KomPowCALCO11"
+refers to entry "DBLP:conf/calco/2011", which doesn't exist
+A bad cross reference---entry "KomPowerCSL11"
+refers to entry "DBLP:conf/csl/2011", which doesn't exist
+Warning--I didn't find a database entry for "DBLP:conf/iclp/2007"
+Warning--I didn't find a database entry for "DBLP:conf/csl/2011"
+Warning--I didn't find a database entry for "DBLP:conf/amast/2010"
+Warning--I didn't find a database entry for "DBLP:conf/calco/2011"
+(There were 4 error messages)
